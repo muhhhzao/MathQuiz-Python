@@ -5,14 +5,8 @@ import random
 import json
 import time
 
-# =========================================================
-# QUIZ MATEMÁTICO - VERSÃO WEB
-# Adaptado do projeto original em Tkinter para Flet
-# =========================================================
-
 NOME_AUTORA = "Ana Carolina de Carvalho Xavier"
 RA_AUTORA = "RA: 6023622"
-
 MAX_NOME = 25
 PONTOS_POR_ACERTO = 50
 SEGUNDOS_POR_PERGUNTA = 10
@@ -97,11 +91,10 @@ def main(page: ft.Page):
             nome = partida["nome"]
             chave = nome.casefold()
             atual = melhores.get(chave)
-
             candidato = (
                 partida["nome"],
                 partida["pontos"],
-                partida["tempo"],
+                partida["tempo"]
             )
 
             if atual is None or (
@@ -139,12 +132,12 @@ def main(page: ft.Page):
             size=tamanho,
             weight=ft.FontWeight.BOLD,
             color=AMEIXA,
-            text_align=ft.TextAlign.CENTER,
+            text_align=ft.TextAlign.CENTER
         )
 
     def botao(texto, funcao, cor=ROSA_FORTE, largura=230):
         return ft.Button(
-            text=texto,
+            content=texto,
             width=largura,
             height=52,
             on_click=funcao,
@@ -154,7 +147,7 @@ def main(page: ft.Page):
                 shape=ft.RoundedRectangleBorder(radius=30),
                 text_style=ft.TextStyle(
                     size=16,
-                    weight=ft.FontWeight.BOLD,
+                    weight=ft.FontWeight.BOLD
                 ),
             ),
         )
@@ -166,7 +159,7 @@ def main(page: ft.Page):
             padding=22,
             border_radius=24,
             width=330,
-            alignment=ft.Alignment.CENTER,
+            alignment=ft.Alignment.CENTER
         )
 
     def mostrar_inicio(e=None):
@@ -202,16 +195,16 @@ def main(page: ft.Page):
                             NOME_AUTORA,
                             color=AMEIXA,
                             size=16,
-                            text_align=ft.TextAlign.CENTER,
+                            text_align=ft.TextAlign.CENTER
                         ),
                         ft.Text(
                             RA_AUTORA,
                             color=ROSA_ESCURO,
-                            size=14,
+                            size=14
                         ),
                     ],
                     horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-                    spacing=12,
+                    spacing=12
                 )
             ),
             ft.Container(height=15),
@@ -219,17 +212,24 @@ def main(page: ft.Page):
             ft.Text(
                 "Responda às 10 perguntas e conquiste 500 pontos!",
                 color=AMEIXA,
-                text_align=ft.TextAlign.CENTER,
+                text_align=ft.TextAlign.CENTER
             ),
             campo_nome,
-            botao("JOGAR", lambda e: iniciar_partida(e, campo_nome)),
-            botao("VER RANKING", mostrar_ranking, cor=ROSA_ESCURO),
+            botao(
+                "JOGAR",
+                lambda e: iniciar_partida(e, campo_nome)
+            ),
+            botao(
+                "VER RANKING",
+                mostrar_ranking,
+                cor=ROSA_ESCURO
+            ),
             ft.Container(height=15),
             ft.Text(
                 "Cada acerto vale 50 pontos • 10 segundos por pergunta",
                 size=12,
                 color=ROSA_ESCURO,
-                text_align=ft.TextAlign.CENTER,
+                text_align=ft.TextAlign.CENTER
             ),
         ])
 
@@ -253,6 +253,7 @@ def main(page: ft.Page):
         nivel = 0
         pontos = 0
         inicio_partida = time.time()
+
         mostrar_pergunta()
 
     async def iniciar_timer():
@@ -267,7 +268,9 @@ def main(page: ft.Page):
             tempo_restante = max(0, tempo_restante - 0.1)
 
             if barra_tempo.page is not None:
-                barra_tempo.value = tempo_restante / SEGUNDOS_POR_PERGUNTA
+                barra_tempo.value = (
+                    tempo_restante / SEGUNDOS_POR_PERGUNTA
+                )
                 texto_tempo.value = f"{tempo_restante:.1f} s"
                 atualizar()
 
@@ -278,14 +281,14 @@ def main(page: ft.Page):
         value=1,
         color=ROSA_FORTE,
         bgcolor=ROSA_CLARO,
-        width=290,
+        width=290
     )
 
     texto_tempo = ft.Text(
         "10.0 s",
         color=ROSA_ESCURO,
         size=15,
-        weight=ft.FontWeight.BOLD,
+        weight=ft.FontWeight.BOLD
     )
 
     def mostrar_pergunta():
@@ -314,7 +317,7 @@ def main(page: ft.Page):
                         str(valor),
                         size=25,
                         weight=ft.FontWeight.BOLD,
-                        color=AMEIXA,
+                        color=AMEIXA
                     ),
                     bgcolor=BRANCO,
                     border=ft.Border.all(3, ROSA_BEBE),
@@ -342,30 +345,34 @@ def main(page: ft.Page):
                     ft.Text(
                         f"Pergunta {nivel + 1}/10",
                         color=AMEIXA,
-                        weight=ft.FontWeight.BOLD,
+                        weight=ft.FontWeight.BOLD
                     ),
                     ft.Container(expand=True),
                     ft.Text(
                         f"{pontos} pts",
                         color=ROSA_ESCURO,
-                        weight=ft.FontWeight.BOLD,
+                        weight=ft.FontWeight.BOLD
                     ),
                 ],
-                width=320,
+                width=320
             ),
             ft.ProgressBar(
                 value=nivel / len(PERGUNTAS),
                 color=ROSA_FORTE,
                 bgcolor=ROSA_CLARO,
-                width=320,
+                width=320
             ),
             cartao(
                 ft.Column(
                     [
-                        ft.Text("Quanto é?", color=ROSA_ESCURO, size=15),
+                        ft.Text(
+                            "Quanto é?",
+                            color=ROSA_ESCURO,
+                            size=15
+                        ),
                         titulo(f"{conta} = ?", 38),
                     ],
-                    horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                    horizontal_alignment=ft.CrossAxisAlignment.CENTER
                 )
             ),
             barra_tempo,
@@ -393,13 +400,13 @@ def main(page: ft.Page):
             pontos += PONTOS_POR_ACERTO
             mostrar_mensagem(
                 f"Acertou! +{PONTOS_POR_ACERTO} pontos",
-                VERDE,
+                VERDE
             )
             page.run_task(avancar_nivel)
         else:
             mostrar_mensagem(
                 f"Resposta incorreta! A resposta certa era {certa}.",
-                CORAL,
+                CORAL
             )
             page.run_task(encerrar_partida, "Errou")
 
@@ -414,8 +421,9 @@ def main(page: ft.Page):
 
         mostrar_mensagem(
             f"Tempo esgotado! A resposta era {certa}.",
-            CORAL,
+            CORAL
         )
+
         page.run_task(encerrar_partida, "Tempo esgotado")
 
     def mostrar_mensagem(mensagem, cor):
@@ -423,18 +431,16 @@ def main(page: ft.Page):
             ft.Container(height=100),
             cartao(
                 ft.Column(
-                    [
-                        titulo(mensagem, 23),
-                    ],
-                    horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                    [titulo(mensagem, 23)],
+                    horizontal_alignment=ft.CrossAxisAlignment.CENTER
                 ),
-                cor,
+                cor
             ),
             ft.Text(
                 f"Pontuação: {pontos}",
                 size=18,
                 color=AMEIXA,
-                weight=ft.FontWeight.BOLD,
+                weight=ft.FontWeight.BOLD
             ),
         ])
 
@@ -456,7 +462,7 @@ def main(page: ft.Page):
             nome_jogador,
             pontos,
             duracao,
-            f"{motivo} na pergunta {nivel + 1}",
+            f"{motivo} na pergunta {nivel + 1}"
         )
 
         await asyncio.sleep(1.5)
@@ -469,7 +475,7 @@ def main(page: ft.Page):
             nome_jogador,
             pontos,
             duracao,
-            "Concluiu as 10 perguntas",
+            "Concluiu as 10 perguntas"
         )
 
         mostrar_tela([
@@ -483,21 +489,25 @@ def main(page: ft.Page):
                             f"Jogador: {nome_jogador}",
                             color=AMEIXA,
                             size=15,
-                            text_align=ft.TextAlign.CENTER,
+                            text_align=ft.TextAlign.CENTER
                         ),
                         ft.Text(
                             f"Tempo total: {duracao:.1f} s",
                             color=AMEIXA,
-                            size=15,
+                            size=15
                         ),
                     ],
                     horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-                    spacing=15,
+                    spacing=15
                 )
             ),
             titulo("Você completou o quiz!", 20),
             botao("JOGAR DE NOVO", mostrar_inicio),
-            botao("VER RANKING", mostrar_ranking, cor=ROSA_ESCURO),
+            botao(
+                "VER RANKING",
+                mostrar_ranking,
+                cor=ROSA_ESCURO
+            ),
         ])
 
     def mostrar_ranking(e=None):
@@ -508,7 +518,7 @@ def main(page: ft.Page):
             ft.Text(
                 "Melhor resultado de cada jogador",
                 color=ROSA_ESCURO,
-                size=13,
+                size=13
             ),
         ]
 
@@ -518,12 +528,14 @@ def main(page: ft.Page):
                     ft.Text(
                         "Ainda não há partidas salvas.",
                         color=AMEIXA,
-                        text_align=ft.TextAlign.CENTER,
+                        text_align=ft.TextAlign.CENTER
                     )
                 )
             )
 
-        for posicao, (nome, pontuacao, tempo) in enumerate(ranking[:8], 1):
+        for posicao, (nome, pontuacao, tempo) in enumerate(
+            ranking[:8], 1
+        ):
             linhas.append(
                 ft.Container(
                     content=ft.Row(
@@ -531,24 +543,24 @@ def main(page: ft.Page):
                             ft.Text(
                                 f"{posicao}º",
                                 color=ROSA_ESCURO,
-                                weight=ft.FontWeight.BOLD,
+                                weight=ft.FontWeight.BOLD
                             ),
                             ft.Text(
                                 nome,
                                 color=AMEIXA,
-                                expand=True,
+                                expand=True
                             ),
                             ft.Text(
                                 f"{pontuacao} pts",
                                 color=AMEIXA,
-                                weight=ft.FontWeight.BOLD,
+                                weight=ft.FontWeight.BOLD
                             ),
                             ft.Text(
                                 f"{tempo:.1f} s",
                                 color=ROSA_ESCURO,
-                                size=12,
+                                size=12
                             ),
-                        ],
+                        ]
                     ),
                     bgcolor=ROSA_BEBE,
                     padding=12,
